@@ -18,13 +18,13 @@ const DEFAULT_PROVIDERS: Provider[] = [
   },
   {
     id: 'opencode',
-    name: 'OpenCode Free Models',
-    baseUrl: 'https://api.z.ai/api/paas/v4/chat/completions', // Default routes through ZAI or open endpoint
-    apiKey: process.env.ZAI_API_KEY || '35eaac71317f4bac828e323ce46e5fe7.w0dLRcFwWLCg9J7H',
+    name: 'OpenCode AI Hub',
+    baseUrl: 'https://api.opencode.ai/v1/chat/completions',
+    apiKey: process.env.OPENCODE_API_KEY || process.env.ZAI_API_KEY || '35eaac71317f4bac828e323ce46e5fe7.w0dLRcFwWLCg9J7H',
     protocol: 'openai',
     enabled: true,
     isCustom: false,
-    description: 'OpenSource state-of-the-art models (DeepSeek R1, Qwen 2.5, Llama 3.3).',
+    description: 'OpenCode router with free open-weights models (DeepSeek R1, Qwen 2.5 72B, Llama 3.3).',
   },
   {
     id: 'openai',
@@ -109,7 +109,7 @@ const DEFAULT_MODELS: ModelConfig[] = [
     id: 'opencode-deepseek-r1',
     name: 'DeepSeek R1 (OpenCode)',
     providerId: 'opencode',
-    targetModel: 'glm-4.5-flash', // Proxy fallback target model
+    targetModel: 'deepseek-r1',
     contextWindow: 128000,
     maxOutputTokens: 8192,
     costPer1kInputTokens: 0.0,
@@ -117,13 +117,13 @@ const DEFAULT_MODELS: ModelConfig[] = [
     enabled: true,
     supportsStreaming: true,
     supportsVision: false,
-    description: 'DeepSeek R1 open-weights reasoning model configured via OpenCode.',
+    description: 'DeepSeek R1 open-weights reasoning model routed via OpenCode.',
   },
   {
     id: 'opencode-qwen-2.5-72b',
     name: 'Qwen 2.5 72B Instruct (OpenCode)',
     providerId: 'opencode',
-    targetModel: 'glm-4.5-flash',
+    targetModel: 'qwen-2.5-72b-instruct',
     contextWindow: 128000,
     maxOutputTokens: 8192,
     costPer1kInputTokens: 0.0,
@@ -132,6 +132,34 @@ const DEFAULT_MODELS: ModelConfig[] = [
     supportsStreaming: true,
     supportsVision: false,
     description: 'Alibaba Qwen 2.5 72B open model via OpenCode router.',
+  },
+  {
+    id: 'opencode-llama-3.3-70b',
+    name: 'Llama 3.3 70B Instruct (OpenCode)',
+    providerId: 'opencode',
+    targetModel: 'llama-3.3-70b-instruct',
+    contextWindow: 128000,
+    maxOutputTokens: 8192,
+    costPer1kInputTokens: 0.0,
+    costPer1kOutputTokens: 0.0,
+    enabled: true,
+    supportsStreaming: true,
+    supportsVision: false,
+    description: 'Meta Llama 3.3 70B flagship open weights model.',
+  },
+  {
+    id: 'opencode-mistral-large',
+    name: 'Mistral Large (OpenCode)',
+    providerId: 'opencode',
+    targetModel: 'mistral-large-2411',
+    contextWindow: 128000,
+    maxOutputTokens: 8192,
+    costPer1kInputTokens: 0.0,
+    costPer1kOutputTokens: 0.0,
+    enabled: true,
+    supportsStreaming: true,
+    supportsVision: false,
+    description: 'Mistral AI flagship reasoning and code model.',
   },
   {
     id: 'gpt-4o',
@@ -232,7 +260,7 @@ class Store {
         providers: this.providers,
         models: this.models,
         apiKeys: this.apiKeys,
-        requestLogs: this.requestLogs.slice(0, 500), // keep latest 500 logs
+        requestLogs: this.requestLogs.slice(0, 500),
       };
       fs.writeFileSync(DATA_FILE, JSON.stringify(payload, null, 2), 'utf-8');
     } catch (e) {
@@ -287,7 +315,7 @@ class Store {
         clientKeyName: 'Interactive Sandbox & External Client Key',
         clientKeySnippet: 'sk-zai-...2026',
         providerId: 'opencode',
-        providerName: 'OpenCode Free Models',
+        providerName: 'OpenCode AI Hub',
         modelId: 'opencode-deepseek-r1',
         endpoint: '/v1/chat/completions',
         status: 200,
@@ -308,7 +336,6 @@ class Store {
   validateApiKey(keyString: string): ApiKey | null {
     if (!keyString) return null;
     const cleanKey = keyString.replace(/^Bearer\s+/i, '').trim();
-    // Also accept process.env.ZAI_API_KEY directly if passed by client
     if (cleanKey === process.env.ZAI_API_KEY || cleanKey === '35eaac71317f4bac828e323ce46e5fe7.w0dLRcFwWLCg9J7H') {
       return this.apiKeys[0];
     }
@@ -341,12 +368,10 @@ class Store {
       totalLatency += log.latencyMs || 0;
       estimatedCostTotalUsd += log.estimatedCostUsd || 0;
 
-      // Model grouping
       if (!byModel[log.modelId]) byModel[log.modelId] = { requests: 0, tokens: 0 };
       byModel[log.modelId].requests++;
       byModel[log.modelId].tokens += log.totalTokens;
 
-      // Provider grouping
       if (!byProvider[log.providerName]) byProvider[log.providerName] = { requests: 0, tokens: 0 };
       byProvider[log.providerName].requests++;
       byProvider[log.providerName].tokens += log.totalTokens;
@@ -355,7 +380,6 @@ class Store {
     const avgLatencyMs = totalRequests > 0 ? Math.round(totalLatency / totalRequests) : 0;
     const uptimeSeconds = Math.floor((Date.now() - this.startTime) / 1000);
 
-    // Build 24-hour volume breakdown
     const hourlyMap = new Map<string, { requests: number; tokens: number }>();
     for (let i = 23; i >= 0; i--) {
       const d = new Date(Date.now() - i * 3600 * 1000);
@@ -405,7 +429,6 @@ class Store {
       this.requestLogs.pop();
     }
 
-    // Update key usage
     const keyItem = this.apiKeys.find((k) => k.name === log.clientKeyName || k.key.includes(log.clientKeySnippet));
     if (keyItem) {
       keyItem.usageCount++;
