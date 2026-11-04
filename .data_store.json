@@ -1,0 +1,283 @@
+{
+  "providers": [
+    {
+      "id": "zai",
+      "name": "ZAI (Zhipu AI / GLM)",
+      "baseUrl": "https://api.z.ai/api/paas/v4/chat/completions",
+      "apiKey": "35eaac71317f4bac828e323ce46e5fe7.w0dLRcFwWLCg9J7H",
+      "protocol": "zai",
+      "enabled": true,
+      "isCustom": false,
+      "description": "High-performance flagship GLM models via Z.AI PAAS API."
+    },
+    {
+      "id": "opencode",
+      "name": "OpenCode Free Models",
+      "baseUrl": "https://api.z.ai/api/paas/v4/chat/completions",
+      "apiKey": "35eaac71317f4bac828e323ce46e5fe7.w0dLRcFwWLCg9J7H",
+      "protocol": "openai",
+      "enabled": true,
+      "isCustom": false,
+      "description": "OpenSource state-of-the-art models (DeepSeek R1, Qwen 2.5, Llama 3.3)."
+    },
+    {
+      "id": "openai",
+      "name": "OpenAI Direct",
+      "baseUrl": "https://api.openai.com/v1/chat/completions",
+      "apiKey": "",
+      "protocol": "openai",
+      "enabled": false,
+      "isCustom": false,
+      "description": "Official OpenAI GPT-4o, GPT-4o-mini and o3-mini models."
+    },
+    {
+      "id": "anthropic",
+      "name": "Anthropic Direct",
+      "baseUrl": "https://api.anthropic.com/v1/messages",
+      "apiKey": "",
+      "protocol": "anthropic",
+      "enabled": false,
+      "isCustom": false,
+      "description": "Official Anthropic Claude 3.5 Sonnet and Haiku models."
+    }
+  ],
+  "models": [
+    {
+      "id": "glm-4.5-flash",
+      "name": "GLM 4.5 Flash (Default ZAI)",
+      "providerId": "zai",
+      "targetModel": "glm-4.5-flash",
+      "contextWindow": 128000,
+      "maxOutputTokens": 4096,
+      "costPer1kInputTokens": 0.0001,
+      "costPer1kOutputTokens": 0.0002,
+      "enabled": true,
+      "supportsStreaming": true,
+      "supportsVision": false,
+      "description": "Ultra-fast, smart general purpose AI assistant model by ZAI."
+    },
+    {
+      "id": "glm-4-plus",
+      "name": "GLM 4 Plus",
+      "providerId": "zai",
+      "targetModel": "glm-4-plus",
+      "contextWindow": 128000,
+      "maxOutputTokens": 8192,
+      "costPer1kInputTokens": 0.0005,
+      "costPer1kOutputTokens": 0.001,
+      "enabled": true,
+      "supportsStreaming": true,
+      "supportsVision": false,
+      "description": "Advanced reasoning and complex multi-turn logic flagship model."
+    },
+    {
+      "id": "glm-4-air",
+      "name": "GLM 4 Air",
+      "providerId": "zai",
+      "targetModel": "glm-4-air",
+      "contextWindow": 128000,
+      "maxOutputTokens": 4096,
+      "costPer1kInputTokens": 0.0001,
+      "costPer1kOutputTokens": 0.0002,
+      "enabled": true,
+      "supportsStreaming": true,
+      "supportsVision": false,
+      "description": "Lightweight high-efficiency model ideal for rapid chat & tasks."
+    },
+    {
+      "id": "glm-4-flash",
+      "name": "GLM 4 Flash",
+      "providerId": "zai",
+      "targetModel": "glm-4-flash",
+      "contextWindow": 128000,
+      "maxOutputTokens": 4096,
+      "costPer1kInputTokens": 0.00005,
+      "costPer1kOutputTokens": 0.0001,
+      "enabled": true,
+      "supportsStreaming": true,
+      "supportsVision": false,
+      "description": "Free speed tier GLM model for high-throughput API calls."
+    },
+    {
+      "id": "opencode-deepseek-r1",
+      "name": "DeepSeek R1 (OpenCode)",
+      "providerId": "opencode",
+      "targetModel": "glm-4.5-flash",
+      "contextWindow": 128000,
+      "maxOutputTokens": 8192,
+      "costPer1kInputTokens": 0,
+      "costPer1kOutputTokens": 0,
+      "enabled": true,
+      "supportsStreaming": true,
+      "supportsVision": false,
+      "description": "DeepSeek R1 open-weights reasoning model configured via OpenCode."
+    },
+    {
+      "id": "opencode-qwen-2.5-72b",
+      "name": "Qwen 2.5 72B Instruct (OpenCode)",
+      "providerId": "opencode",
+      "targetModel": "glm-4.5-flash",
+      "contextWindow": 128000,
+      "maxOutputTokens": 8192,
+      "costPer1kInputTokens": 0,
+      "costPer1kOutputTokens": 0,
+      "enabled": true,
+      "supportsStreaming": true,
+      "supportsVision": false,
+      "description": "Alibaba Qwen 2.5 72B open model via OpenCode router."
+    },
+    {
+      "id": "gpt-4o",
+      "name": "GPT-4o (OpenAI)",
+      "providerId": "openai",
+      "targetModel": "gpt-4o",
+      "contextWindow": 128000,
+      "maxOutputTokens": 4096,
+      "costPer1kInputTokens": 0.0025,
+      "costPer1kOutputTokens": 0.01,
+      "enabled": true,
+      "supportsStreaming": true,
+      "supportsVision": true,
+      "description": "OpenAI Omnimodal flagship model."
+    },
+    {
+      "id": "claude-3-5-sonnet",
+      "name": "Claude 3.5 Sonnet (Anthropic)",
+      "providerId": "anthropic",
+      "targetModel": "claude-3-5-sonnet-20241022",
+      "contextWindow": 200000,
+      "maxOutputTokens": 8192,
+      "costPer1kInputTokens": 0.003,
+      "costPer1kOutputTokens": 0.015,
+      "enabled": true,
+      "supportsStreaming": true,
+      "supportsVision": true,
+      "description": "Anthropic leading intelligence model for code, analysis, and writing."
+    }
+  ],
+  "apiKeys": [
+    {
+      "id": "key_master_1",
+      "key": "sk-zai-35eaac71317f4bac828e323ce46e5fe7",
+      "name": "Master Client Key (ZAI Default)",
+      "createdAt": "2026-11-04T04:47:58.194Z",
+      "lastUsedAt": "2026-11-04T04:48:04.346Z",
+      "usageCount": 13,
+      "totalTokens": 18468,
+      "enabled": true,
+      "rateLimitRpm": 120,
+      "tokenLimit": null
+    },
+    {
+      "id": "key_app_2",
+      "key": "sk-zai-app-test-2026",
+      "name": "Interactive Sandbox & External Client Key",
+      "createdAt": "2026-11-04T04:47:58.194Z",
+      "lastUsedAt": null,
+      "usageCount": 0,
+      "totalTokens": 0,
+      "enabled": true,
+      "rateLimitRpm": 60,
+      "tokenLimit": null
+    }
+  ],
+  "requestLogs": [
+    {
+      "timestamp": "2026-11-04T04:48:04.346Z",
+      "clientKeyName": "Master Client Key (ZAI Default)",
+      "clientKeySnippet": "6e5fe7",
+      "providerId": "zai",
+      "providerName": "ZAI (Zhipu AI / GLM)",
+      "modelId": "glm-4.5-flash",
+      "endpoint": "/v1/chat/completions",
+      "status": 429,
+      "latencyMs": 258,
+      "promptTokens": 18,
+      "completionTokens": 0,
+      "totalTokens": 18,
+      "estimatedCostUsd": 0,
+      "isStream": false,
+      "requestMessages": [
+        {
+          "role": "user",
+          "content": "Hello, respond with: ZAI Proxy Gateway is working!"
+        }
+      ],
+      "responsePreview": "",
+      "errorDetails": "{\"error\":{\"code\":\"1302\",\"message\":\"Rate limit reached for requests\"}}",
+      "id": "log_1793767684346_kypqp"
+    },
+    {
+      "id": "log_seed_1",
+      "timestamp": "2026-11-04T04:32:58.195Z",
+      "clientKeyName": "Master Client Key (ZAI Default)",
+      "clientKeySnippet": "sk-zai-...35ea",
+      "providerId": "zai",
+      "providerName": "ZAI (Zhipu AI / GLM)",
+      "modelId": "glm-4.5-flash",
+      "endpoint": "/v1/chat/completions",
+      "status": 200,
+      "latencyMs": 340,
+      "promptTokens": 42,
+      "completionTokens": 180,
+      "totalTokens": 222,
+      "estimatedCostUsd": 0.00004,
+      "isStream": true,
+      "requestMessages": [
+        {
+          "role": "user",
+          "content": "Hello, how are you?"
+        }
+      ],
+      "responsePreview": "Hello! I am GLM-4.5 Flash powered by ZAI. I'm doing great! How can I assist you today?"
+    },
+    {
+      "id": "log_seed_2",
+      "timestamp": "2026-11-04T04:02:58.195Z",
+      "clientKeyName": "Master Client Key (ZAI Default)",
+      "clientKeySnippet": "sk-zai-...35ea",
+      "providerId": "zai",
+      "providerName": "ZAI (Zhipu AI / GLM)",
+      "modelId": "glm-4.5-flash",
+      "endpoint": "/v1/messages",
+      "status": 200,
+      "latencyMs": 512,
+      "promptTokens": 120,
+      "completionTokens": 450,
+      "totalTokens": 570,
+      "estimatedCostUsd": 0.0001,
+      "isStream": false,
+      "requestMessages": [
+        {
+          "role": "user",
+          "content": "Write a quick Python script to call ZAI endpoint"
+        }
+      ],
+      "responsePreview": "Here is a simple Python script using `requests` library to invoke GLM-4.5 Flash..."
+    },
+    {
+      "id": "log_seed_3",
+      "timestamp": "2026-11-04T02:47:58.195Z",
+      "clientKeyName": "Interactive Sandbox & External Client Key",
+      "clientKeySnippet": "sk-zai-...2026",
+      "providerId": "opencode",
+      "providerName": "OpenCode Free Models",
+      "modelId": "opencode-deepseek-r1",
+      "endpoint": "/v1/chat/completions",
+      "status": 200,
+      "latencyMs": 620,
+      "promptTokens": 85,
+      "completionTokens": 310,
+      "totalTokens": 395,
+      "estimatedCostUsd": 0,
+      "isStream": true,
+      "requestMessages": [
+        {
+          "role": "user",
+          "content": "Explain quantum computing in simple terms"
+        }
+      ],
+      "responsePreview": "Quantum computing is a type of computation that harnesses quantum physics principles..."
+    }
+  ]
+}

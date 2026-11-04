@@ -1,0 +1,6 @@
+{
+  "name": "ZAI AI Proxy & API Gateway",
+  "description": "OpenAI & Anthropic Compatible AI Proxy with ZAI GLM-4.5 integration, live analytics dashboard, chat sandbox, model directory & API key manager.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
